@@ -1,0 +1,11 @@
+{
+  "name": "farmarket-api",
+  "version": "1.0.0",
+  "description": "API for Farmarket Dicoding Cycle 6 Capstone Project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
