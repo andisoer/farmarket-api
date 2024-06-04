@@ -9,7 +9,7 @@ function emptyOrRows(rows) {
     return rows;
 }
 
-function response(res, response, next, statusCode = 200) {
+function response(res, response, statusCode = 200) {
     res.status(statusCode).json(response);
 }
 

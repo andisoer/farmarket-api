@@ -5,4 +5,9 @@ const insertVegetable = async (id, name, price, unit, unit_total, description) =
     await db.query(query, [id, name, price, unit, unit_total, description])
 }
 
-module.exports = { insertVegetable };
+const readVegetable = async (offset, limit) => {
+    const query = `SELECT id, name, price, unit, unit_total FROM vegetables LIMIT ${offset},${limit}`;
+    return await db.query(query);
+}
+
+module.exports = { insertVegetable, readVegetable };
