@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 // const multer = require('multer');
-const vegetableController = require('../controller/vegetable_controller');
+const articleController = require('../controller/article_controller');
 
 // Set up multer for file uploads
 // const storage = multer.diskStorage({
@@ -15,7 +15,7 @@ const vegetableController = require('../controller/vegetable_controller');
 // });
 // const upload = multer({ storage: storage });
 
-router.get('/', async (req, res, next) => await vegetableController.getAll(req, res));
-router.post('/', async (req, res, next) => await vegetableController.addVegetable(req, res));
+router.get('/', async (req, res, next) => await articleController.getAll(req, res));
+router.post('/', async (req, res, next) => await articleController.addArticle(req, res));
 
 module.exports = router;
