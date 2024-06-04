@@ -10,4 +10,9 @@ const readArticle = async (offset, limit) => {
     return await db.query(query);
 }
 
-module.exports = { insertArticle, readArticle };
+const removeArticle = async (id) => {
+    const query = 'DELETE FROM articles WHERE id=?';
+    await db.query(query, [id])
+}
+
+module.exports = { insertArticle, readArticle, removeArticle };

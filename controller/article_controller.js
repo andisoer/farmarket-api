@@ -2,7 +2,7 @@ const db = require('../config/database.js');
 const helper = require('../services/helper');
 const config = require('../services/config');
 
-const { insertArticle, readArticle } = require('../models/article_model');
+const { insertArticle, readArticle, removeArticle } = require('../models/article_model');
 
 const { v4: uuidv4 } = require('uuid');
 
@@ -19,7 +19,7 @@ async function getAll(req, res) {
 
     const response = { 'success': true, data, meta }
 
-    return helper.response(res, response, 401);
+    return helper.response(res, response, 200);
 }
 
 async function addArticle(request, res) {
@@ -47,6 +47,29 @@ async function addArticle(request, res) {
     }
 }
 
+
+async function deleteArticle(request, res) {
+    try {
+        const id = request.params.articleId;
+
+        console.log(`${request.params}`);
+
+        console.log(`article id ${id}`);
+
+        await removeArticle(id);
+
+        const response = { 'success': true, 'message': 'Success delete article' }
+
+        return helper.response(res, response, 200);
+
+    } catch (error) {
+        console.log(`error ${error}`);
+
+        const response = { 'success': false, 'message': 'Failed delete article' }
+        return helper.response(res, response, 500);
+    }
+}
+
 module.exports = {
-    getAll, addArticle
+    getAll, addArticle, deleteArticle
 }

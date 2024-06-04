@@ -17,5 +17,6 @@ const articleController = require('../controller/article_controller');
 
 router.get('/', async (req, res, next) => await articleController.getAll(req, res));
 router.post('/', async (req, res, next) => await articleController.addArticle(req, res));
+router.delete('/:articleId', async (req, res, next) => await articleController.deleteArticle(req, res));
 
 module.exports = router;
