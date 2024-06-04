@@ -9,7 +9,12 @@ function emptyOrRows(rows) {
     return rows;
 }
 
+function response(res, response, next, statusCode = 200) {
+    res.status(statusCode).json(response);
+}
+
 module.exports = {
     getOffset,
-    emptyOrRows
+    emptyOrRows,
+    response
 }
