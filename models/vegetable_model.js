@@ -13,7 +13,7 @@ export const insertVegetable = async (
   await _query(query, [id, name, imageUrl, price, unit, unitTotal, description]);
 };
 
-export const readVegetable = async (offset, limit) => {
+export const readVegetable = async (offset = 1, limit = 10) => {
   const query = `SELECT id, name, image_url, price, unit, unit_total FROM vegetables LIMIT ${offset},${limit}`;
   return _query(query);
 };

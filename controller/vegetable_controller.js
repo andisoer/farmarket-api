@@ -16,7 +16,7 @@ const getAll = async (req, res) => {
 
   const response = { success: true, data, meta };
 
-  return result(res, response, 401);
+  return result(res, response, 200);
 };
 
 const addVegetable = async (request, res) => {

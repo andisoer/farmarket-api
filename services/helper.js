@@ -1,4 +1,4 @@
-export function getOffset(listPerPage, currentPage = 1) {
+export function getOffset(listPerPage = 10, currentPage = 1) {
   return (currentPage - 1) * [listPerPage];
 }
 

@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import AdminJS from 'adminjs';
 import AdminJSExpress from '@adminjs/express';
+import cors from 'cors';
 
 import { fileURLToPath } from 'url';
 import indexRouter from './routes/index.js';
@@ -21,6 +22,8 @@ const app = express();
 
 const admin = new AdminJS({});
 const adminRouter = AdminJSExpress.buildRouter(admin);
+
+app.use(cors());
 
 app.use(logger('dev'));
 app.use(json());

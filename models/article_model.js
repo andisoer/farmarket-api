@@ -5,7 +5,7 @@ export const insertArticle = async (id, imageUrl, title, description) => {
   await _query(query, [id, title, imageUrl, description]);
 };
 
-export const readArticle = async (offset, limit) => {
+export const readArticle = async (offset = 1, limit = 10) => {
   const query = `SELECT id, title, description, image_url, created_at FROM articles LIMIT ${offset},${limit}`;
   return _query(query);
 };

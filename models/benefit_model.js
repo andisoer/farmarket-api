@@ -5,7 +5,7 @@ export const insertBenefit = async (id, name) => {
   await _query(query, [id, name]);
 };
 
-export const readBenefit = async (offset, limit) => {
+export const readBenefit = async (offset = 1, limit = 10) => {
   const query = `SELECT id, benefit FROM benefits LIMIT ${offset},${limit}`;
   return _query(query);
 };
