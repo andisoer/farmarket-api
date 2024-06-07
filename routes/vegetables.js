@@ -1,5 +1,7 @@
 import { Router } from 'express';
-import { getAll, addVegetable, getById } from '../controller/vegetable_controller.js';
+import {
+  getAll, addVegetable, getById, getVegetablesByBenefitIds,
+} from '../controller/vegetable_controller.js';
 import upload from '../middlewares/upload_middleware.js';
 
 const router = Router();
@@ -18,6 +20,11 @@ router.post(
   '/',
   upload.single('image'),
   addVegetable,
+);
+
+router.post(
+  '/recommendation',
+  async (req, res) => getVegetablesByBenefitIds(req, res),
 );
 
 export default router;

@@ -1,7 +1,9 @@
 import { v4 as uuidv4 } from 'uuid';
 import { getOffset, emptyOrRows, result } from '../services/helper.js';
 
-import { insertVegetable, readVegetable, readVegetableById } from '../models/vegetable_model.js';
+import {
+  insertVegetable, readVegetable, readVegetableById, readVegetablesByBenefitIds,
+} from '../models/vegetable_model.js';
 
 const getAll = async (req, res) => {
   const { page } = req.query;
@@ -90,8 +92,52 @@ const addVegetable = async (request, res) => {
   }
 };
 
+const getVegetablesByBenefitIds = async (request, res) => {
+  const { benefitIds } = request.body;
+
+  if (!Array.isArray(benefitIds) || benefitIds.length === 0 || benefitIds.length > 3) {
+    const response = {
+      success: false,
+      message: 'Please provide between 1 to 3 benefits',
+    };
+    return result(res, response, 401);
+  }
+
+  try {
+    const data = await readVegetablesByBenefitIds(benefitIds);
+    if (data.length === 0) {
+      const response = { success: false, message: 'Sorry, no vegetables can be recommended based on this benefits' };
+      return result(res, response, 404);
+    }
+
+    const vegetables = data.map((row) => ({
+      id: row.id,
+      name: row.name,
+      price: row.price,
+      unit: row.unit,
+      unit_total: row.unit_total,
+      image_url: row.image_url,
+      description: row.description,
+      benefits: row.benefit_ids.split(',').map((id, index) => ({
+        id,
+        name: row.benefit_names.split(',')[index],
+      })),
+    }));
+
+    const response = { success: true, data: vegetables };
+
+    return result(res, response, 200);
+  } catch (error) {
+    console.log(`error ${error}`);
+
+    const response = { success: false, message: 'Failed fetch vegetables by benefits' };
+    return result(res, response, 500);
+  }
+};
+
 export {
   getAll,
   getById,
   addVegetable,
+  getVegetablesByBenefitIds,
 };

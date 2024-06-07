@@ -33,6 +33,27 @@ export const checkVegetableExists = async (id) => {
   return rows.length > 0;
 };
 
+export const readVegetablesByBenefitIds = async (benefitIds) => {
+  const placeholders = benefitIds.map(() => '?').join(',');
+  const query = `
+      SELECT v.id, v.name, v.price, v.unit, v.unit_total, v.image_url, v.description, 
+               GROUP_CONCAT(DISTINCT b.id) as benefit_ids, 
+               GROUP_CONCAT(DISTINCT b.benefit) as benefit_names
+        FROM vegetables v
+        JOIN vegetable_benefits vb ON v.id = vb.vegetable_id
+        JOIN benefits b ON vb.benefit_id = b.id
+        WHERE b.id IN (${placeholders})
+        GROUP BY v.id, v.name, v.price, v.unit, v.unit_total, v.image_url, v.description
+        HAVING COUNT(DISTINCT b.id) = ?
+  `;
+
+  return _query(query, [...benefitIds, benefitIds.length]);
+};
+
 export default {
-  insertVegetable, readVegetable, readVegetableById, checkVegetableExists,
+  insertVegetable,
+  readVegetable,
+  readVegetableById,
+  checkVegetableExists,
+  readVegetablesByBenefitIds,
 };
