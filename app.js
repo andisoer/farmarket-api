@@ -35,4 +35,7 @@ app.use('/benefits', benefitRouter);
 app.use('/auth', authRouter);
 app.use(admin.options.rootPath, adminRouter);
 
+/// Public Uploads
+app.use('/uploads', express.static(path.join(path.resolve(), 'uploads')));
+
 export default app;

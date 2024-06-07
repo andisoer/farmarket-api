@@ -3,7 +3,7 @@ import { getOffset, emptyOrRows, result } from '../services/helper.js';
 
 import { insertVegetable, readVegetable } from '../models/vegetable_model.js';
 
-export async function getAll(req, res) {
+const getAll = async (req, res) => {
   const { page } = req.query;
   const { limit } = req.query;
 
@@ -17,23 +17,23 @@ export async function getAll(req, res) {
   const response = { success: true, data, meta };
 
   return result(res, response, 401);
-}
+};
 
-export async function addVegetable(request, res) {
+const addVegetable = async (request, res) => {
   try {
     const {
       name, price, unit, unitTotal, description,
     } = request.body;
 
-    // const image = req.file ? req.file.filename : null;
+    const imageUrl = request.file ? request.file.path : null;
     const id = uuidv4();
 
-    if (!name || !price || !unit || !unitTotal || !description) {
+    if (!name || !imageUrl || !price || !unit || !unitTotal || !description) {
       const response = {
         success: false,
         message: 'Please fill all required fields',
       };
-      return result(res, response, 401);
+      return result(res, response, 403);
     }
 
     const validUnits = ['gr', 'pcs', 'kg'];
@@ -45,10 +45,7 @@ export async function addVegetable(request, res) {
       return result(res, response, 401);
     }
 
-    // const query = 'INSERT INTO vegetables
-    // (id, name, price, unit, unit_total, image, description)
-    // VALUES (?, ?, ?, ?, ?, ?, ?)';
-    await insertVegetable(id, name, price, unit, unitTotal, description);
+    await insertVegetable(id, name, imageUrl, price, unit, unitTotal, description);
 
     const response = { success: true, message: 'Success add vegetable' };
 
@@ -59,9 +56,9 @@ export async function addVegetable(request, res) {
     const response = { success: false, message: 'Failed add vegetables' };
     return result(res, response, 500);
   }
-}
+};
 
-export default {
+export {
   getAll,
   addVegetable,
 };
