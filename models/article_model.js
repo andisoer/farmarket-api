@@ -1,8 +1,8 @@
 import { query as _query } from '../config/database.js';
 
-export const insertArticle = async (id, title, description) => {
-  const query = 'INSERT INTO articles (id, title, description) VALUES (?, ?, ?)';
-  await _query(query, [id, title, description]);
+export const insertArticle = async (id, imageUrl, title, description) => {
+  const query = 'INSERT INTO articles (id, title, image_url, description) VALUES (?, ?, ?, ?)';
+  await _query(query, [id, title, imageUrl, description]);
 };
 
 export const readArticle = async (offset, limit) => {

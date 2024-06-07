@@ -3,7 +3,7 @@ import { getOffset, emptyOrRows, result } from '../services/helper.js';
 
 import { insertArticle, readArticle, removeArticle } from '../models/article_model.js';
 
-export async function getAll(req, res) {
+const getAll = async (req, res) => {
   const { page } = req.query;
   const { limit } = req.query;
 
@@ -17,15 +17,16 @@ export async function getAll(req, res) {
   const response = { success: true, data, meta };
 
   return result(res, response, 200);
-}
+};
 
-export async function addArticle(request, res) {
+const addArticle = async (request, res) => {
   try {
     const { title, description } = request.body;
 
+    const imageUrl = request.file ? request.file.path : null;
     const id = uuidv4();
 
-    if (!title || !description) {
+    if (!title || !imageUrl || !description) {
       const response = {
         success: false,
         message: 'Please fill all required fields',
@@ -33,7 +34,7 @@ export async function addArticle(request, res) {
       return result(res, response, 401);
     }
 
-    await insertArticle(id, title, description);
+    await insertArticle(id, imageUrl, title, description);
 
     const response = { success: true, message: 'Success add article' };
 
@@ -44,9 +45,9 @@ export async function addArticle(request, res) {
     const response = { success: false, message: 'Failed add article' };
     return result(res, response, 500);
   }
-}
+};
 
-export async function deleteArticle(request, res) {
+const deleteArticle = async (request, res) => {
   try {
     const id = request.params.articleId;
 
@@ -65,9 +66,9 @@ export async function deleteArticle(request, res) {
     const response = { success: false, message: 'Failed delete article' };
     return result(res, response, 500);
   }
-}
+};
 
-export default {
+export {
   getAll,
   addArticle,
   deleteArticle,
