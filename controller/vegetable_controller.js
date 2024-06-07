@@ -24,7 +24,29 @@ const getById = async (req, res) => {
 
   const data = await readVegetableById(id);
 
-  const response = { success: true, data: data[0] };
+  if (data.length === 0) {
+    const response = {
+      success: false,
+      message: 'Vegetable not found',
+    };
+    return result(res, response, 404);
+  }
+
+  const vegetable = {
+    id: data[0].id,
+    name: data[0].name,
+    price: data[0].price,
+    unit: data[0].unit,
+    unit_total: data[0].unit_total,
+    image_url: data[0].image_url,
+    description: data[0].description,
+    benefits: data.filter((row) => row.benefit_id).map((row) => ({
+      id: row.benefit_id,
+      name: row.benefit_name,
+    })),
+  };
+
+  const response = { success: true, data: vegetable };
 
   return result(res, response, 200);
 };

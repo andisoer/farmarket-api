@@ -19,7 +19,11 @@ export const readVegetable = async (offset = 1, limit = 10) => {
 };
 
 export const readVegetableById = async (id) => {
-  const query = `SELECT id, name, description, image_url, price, unit, unit_total FROM vegetables WHERE id = "${id}"`;
+  const query = `SELECT v.*, b.id as benefit_id, b.benefit as benefit_name
+        FROM vegetables v
+        LEFT JOIN vegetable_benefits vb ON v.id = vb.vegetable_id
+        LEFT JOIN benefits b ON vb.benefit_id = b.id
+        WHERE v.id = "${id}"`;
   return _query(query);
 };
 
