@@ -18,4 +18,9 @@ export const readVegetable = async (offset = 1, limit = 10) => {
   return _query(query);
 };
 
-export default { insertVegetable, readVegetable };
+export const readVegetableById = async (id) => {
+  const query = `SELECT id, name, description, image_url, price, unit, unit_total FROM vegetables WHERE id = "${id}"`;
+  return _query(query);
+};
+
+export default { insertVegetable, readVegetable, readVegetableById };

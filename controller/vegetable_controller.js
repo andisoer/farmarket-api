@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { getOffset, emptyOrRows, result } from '../services/helper.js';
 
-import { insertVegetable, readVegetable } from '../models/vegetable_model.js';
+import { insertVegetable, readVegetable, readVegetableById } from '../models/vegetable_model.js';
 
 const getAll = async (req, res) => {
   const { page } = req.query;
@@ -15,6 +15,16 @@ const getAll = async (req, res) => {
   const meta = { page };
 
   const response = { success: true, data, meta };
+
+  return result(res, response, 200);
+};
+
+const getById = async (req, res) => {
+  const id = req.params.vegetableId;
+
+  const data = await readVegetableById(id);
+
+  const response = { success: true, data: data[0] };
 
   return result(res, response, 200);
 };
@@ -60,5 +70,6 @@ const addVegetable = async (request, res) => {
 
 export {
   getAll,
+  getById,
   addVegetable,
 };
