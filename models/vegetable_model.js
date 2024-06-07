@@ -23,4 +23,12 @@ export const readVegetableById = async (id) => {
   return _query(query);
 };
 
-export default { insertVegetable, readVegetable, readVegetableById };
+export const checkVegetableExists = async (id) => {
+  const query = 'SELECT 1 FROM vegetables WHERE id = ?';
+  const rows = await _query(query, [id]);
+  return rows.length > 0;
+};
+
+export default {
+  insertVegetable, readVegetable, readVegetableById, checkVegetableExists,
+};

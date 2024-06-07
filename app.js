@@ -10,6 +10,7 @@ import vegetablesRouter from './routes/vegetables.js';
 import articleRouter from './routes/article.js';
 import benefitRouter from './routes/benefit.js';
 import authRouter from './routes/auth.js';
+import vegetableBenefitRouter from './routes/vegetables_benefit.js';
 
 const { json, urlencoded } = express;
 
@@ -31,6 +32,7 @@ app.use('/vegetables', vegetablesRouter);
 app.use('/articles', articleRouter);
 app.use('/benefits', benefitRouter);
 app.use('/auth', authRouter);
+app.use('/vegetable-benefits', vegetableBenefitRouter);
 
 /// Public Uploads
 app.use('/uploads', express.static(path.join(path.resolve(), 'uploads')));

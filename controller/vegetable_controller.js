@@ -43,7 +43,7 @@ const addVegetable = async (request, res) => {
         success: false,
         message: 'Please fill all required fields',
       };
-      return result(res, response, 403);
+      return result(res, response, 401);
     }
 
     const validUnits = ['gr', 'pcs', 'kg'];

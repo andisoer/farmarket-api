@@ -10,4 +10,10 @@ export const readBenefit = async (offset = 1, limit = 10) => {
   return _query(query);
 };
 
-export default { insertBenefit, readBenefit };
+export const checkBenefitExists = async (id) => {
+  const query = 'SELECT 1 FROM benefits WHERE id = ?';
+  const rows = await _query(query, [id]);
+  return rows.length > 0;
+};
+
+export default { insertBenefit, readBenefit, checkBenefitExists };
