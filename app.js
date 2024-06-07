@@ -2,8 +2,6 @@ import express from 'express';
 import path, { join } from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
-import AdminJS from 'adminjs';
-import AdminJSExpress from '@adminjs/express';
 import cors from 'cors';
 
 import { fileURLToPath } from 'url';
@@ -20,9 +18,6 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
-const admin = new AdminJS({});
-const adminRouter = AdminJSExpress.buildRouter(admin);
-
 app.use(cors());
 
 app.use(logger('dev'));
@@ -36,7 +31,6 @@ app.use('/vegetables', vegetablesRouter);
 app.use('/articles', articleRouter);
 app.use('/benefits', benefitRouter);
 app.use('/auth', authRouter);
-app.use(admin.options.rootPath, adminRouter);
 
 /// Public Uploads
 app.use('/uploads', express.static(path.join(path.resolve(), 'uploads')));
