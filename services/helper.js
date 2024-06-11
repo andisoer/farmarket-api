@@ -1,4 +1,4 @@
-export function getOffset(currentPage = 1, listPerPage) {
+export function getOffset(listPerPage, currentPage = 1) {
   return (currentPage - 1) * [listPerPage];
 }
 
@@ -16,5 +16,5 @@ export function result(res, response, statusCode = 200) {
 export default {
   getOffset,
   emptyOrRows,
-  result
+  result,
 };

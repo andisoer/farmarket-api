@@ -1,21 +1,20 @@
-import db from "../config/database.js";
+import { query as _query } from '../config/database.js';
 
 export const insertVegetable = async (
   id,
   name,
   price,
   unit,
-  unit_total,
+  unitTotal,
   description,
 ) => {
-  const query =
-    "INSERT INTO vegetables (id, name, price, unit, unit_total, description) VALUES (?, ?, ?, ?, ?, ?)";
-  await db.query(query, [id, name, price, unit, unit_total, description]);
+  const query = 'INSERT INTO vegetables (id, name, price, unit, unit_total, description) VALUES (?, ?, ?, ?, ?, ?)';
+  await _query(query, [id, name, price, unit, unitTotal, description]);
 };
 
 export const readVegetable = async (offset, limit) => {
   const query = `SELECT id, name, price, unit, unit_total FROM vegetables LIMIT ${offset},${limit}`;
-  return await db.query(query);
+  return _query(query);
 };
 
 export default { insertVegetable, readVegetable };

@@ -1,23 +1,22 @@
-import helper from "../services/helper.js";
+import { v4 as uuidv4 } from 'uuid';
+import { getOffset, emptyOrRows, result } from '../services/helper.js';
 
-import { insertBenefit, readBenefit } from "../models/benefit_model.js";
-
-import { v4 as uuidv4 } from "uuid";
+import { insertBenefit, readBenefit } from '../models/benefit_model.js';
 
 export async function getAll(req, res) {
-  const page = req.query.page;
-  const limit = req.query.limit;
+  const { page } = req.query;
+  const { limit } = req.query;
 
-  const offset = helper.getOffset(page, limit);
+  const offset = getOffset(limit, page);
 
   const rows = await readBenefit(offset, limit);
-  const data = helper.emptyOrRows(rows);
+  const data = emptyOrRows(rows);
 
   const meta = { page };
 
   const response = { success: true, data, meta };
 
-  return helper.result(res, response, 200);
+  return result(res, response, 200);
 }
 
 export async function addBenefit(request, res) {
@@ -29,21 +28,21 @@ export async function addBenefit(request, res) {
     if (!benefit) {
       const response = {
         success: false,
-        message: "Please fill all required fields",
+        message: 'Please fill all required fields',
       };
-      return helper.result(res, response, 401);
+      return result(res, response, 401);
     }
 
     await insertBenefit(id, benefit);
 
-    const response = { success: true, message: "Success add benefit!" };
+    const response = { success: true, message: 'Success add benefit!' };
 
-    return helper.result(res, response, 201);
+    return result(res, response, 201);
   } catch (error) {
     console.log(`error ${error}`);
 
-    const response = { success: false, message: "Failed add benefit" };
-    return helper.result(res, response, 500);
+    const response = { success: false, message: 'Failed add benefit' };
+    return result(res, response, 500);
   }
 }
 

@@ -1,14 +1,13 @@
-import { getOffset, emptyOrRows, result } from "../services/helper.js";
+import { v4 as uuidv4 } from 'uuid';
+import { getOffset, emptyOrRows, result } from '../services/helper.js';
 
-import { insertArticle, readArticle, removeArticle } from "../models/article_model.js";
-
-import { v4 as uuidv4 } from "uuid";
+import { insertArticle, readArticle, removeArticle } from '../models/article_model.js';
 
 export async function getAll(req, res) {
-  const page = req.query.page;
-  const limit = req.query.limit;
+  const { page } = req.query;
+  const { limit } = req.query;
 
-  const offset = getOffset(page, limit);
+  const offset = getOffset(limit, page);
 
   const rows = await readArticle(offset, limit);
   const data = emptyOrRows(rows);
@@ -29,20 +28,20 @@ export async function addArticle(request, res) {
     if (!title || !description) {
       const response = {
         success: false,
-        message: "Please fill all required fields",
+        message: 'Please fill all required fields',
       };
       return result(res, response, 401);
     }
 
     await insertArticle(id, title, description);
 
-    const response = { success: true, message: "Success add article" };
+    const response = { success: true, message: 'Success add article' };
 
     return result(res, response, 201);
   } catch (error) {
     console.log(`error ${error}`);
 
-    const response = { success: false, message: "Failed add article" };
+    const response = { success: false, message: 'Failed add article' };
     return result(res, response, 500);
   }
 }
@@ -57,13 +56,13 @@ export async function deleteArticle(request, res) {
 
     await removeArticle(id);
 
-    const response = { success: true, message: "Success delete article" };
+    const response = { success: true, message: 'Success delete article' };
 
     return result(res, response, 200);
   } catch (error) {
     console.log(`error ${error}`);
 
-    const response = { success: false, message: "Failed delete article" };
+    const response = { success: false, message: 'Failed delete article' };
     return result(res, response, 500);
   }
 }

@@ -1,13 +1,13 @@
-import db from "../config/database.js";
+import { query as _query } from '../config/database.js';
 
 export const insertBenefit = async (id, name) => {
-  const query = "INSERT INTO benefits (id, benefit) VALUES (?, ?)";
-  await db.query(query, [id, name]);
+  const query = 'INSERT INTO benefits (id, benefit) VALUES (?, ?)';
+  await _query(query, [id, name]);
 };
 
 export const readBenefit = async (offset, limit) => {
   const query = `SELECT id, benefit FROM benefits LIMIT ${offset},${limit}`;
-  return await db.query(query);
+  return _query(query);
 };
 
 export default { insertBenefit, readBenefit };

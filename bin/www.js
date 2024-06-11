@@ -1,46 +1,21 @@
 #!/usr/bin/env node
-process.env['DEBUG'] = 'farmarket-api:server';
-
 /**
  * Module dependencies.
  */
 
-import app from "../app.js";
+import { createServer } from 'http';
+import app from '../app.js';
 // var debug = require("debug")("farmarket-api:server");
-import { createServer } from "http";
 
-/**
- * Get port from environment and store in Express.
- */
+process.env.DEBUG = 'farmarket-api:server';
 
-var port = normalizePort(process.env.PORT || "5000");
-app.set("port", port);
-
-/**
- * Create HTTP server.
- */
-
-var server = createServer(app);
-
-/**
- * Listen on provided port, on all network interfaces.
- */
-
-var host = process.env.NODE_ENV !== "production" ? "localhost" : "0.0.0.0";
-
-server.listen(port, host);
-server.on("error", onError);
-server.on("listening", onListening);
-
-console.log(`Server running at http://${host}:${port}`);
 /**
  * Normalize a port into a number, string, or false.
  */
-
 function normalizePort(val) {
-  var port = parseInt(val, 10);
+  const port = parseInt(val, 10);
 
-  if (isNaN(port)) {
+  if (Number.isNaN(port)) {
     // named pipe
     return val;
   }
@@ -54,24 +29,43 @@ function normalizePort(val) {
 }
 
 /**
+ * Get port from environment and store in Express.
+ */
+
+const port = normalizePort(process.env.PORT || '5000');
+app.set('port', port);
+
+/**
+ * Create HTTP server.
+ */
+
+const server = createServer(app);
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+const host = process.env.NODE_ENV !== 'production' ? 'localhost' : '0.0.0.0';
+
+/**
  * Event listener for HTTP server "error" event.
  */
 
 function onError(error) {
-  if (error.syscall !== "listen") {
+  if (error.syscall !== 'listen') {
     throw error;
   }
 
-  var bind = typeof port === "string" ? "Pipe " + port : "Port " + port;
+  const bind = typeof port === 'string' ? `Pipe ${port}` : `Port ${port}`;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
-    case "EACCES":
-      console.error(bind + " requires elevated privileges");
+    case 'EACCES':
+      console.error(`${bind} requires elevated privileges`);
       process.exit(1);
       break;
-    case "EADDRINUSE":
-      console.error(bind + " is already in use");
+    case 'EADDRINUSE':
+      console.error(`${bind} is already in use`);
       process.exit(1);
       break;
     default:
@@ -84,7 +78,13 @@ function onError(error) {
  */
 
 function onListening() {
-  var addr = server.address();
-  var bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
+  // const addr = server.address();
+  // const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
   // debug("Listening on " + bind);
 }
+
+server.listen(port, host);
+server.on('error', onError);
+server.on('listening', onListening);
+
+console.log(`Server running at http://${host}:${port}`);

@@ -1,15 +1,16 @@
-import { Router } from "express";
-var router = Router();
+import { Router } from 'express';
 
-import { getAll, addBenefit } from "../controller/benefit_controller.js";
+import { getAll, addBenefit } from '../controller/benefit_controller.js';
+
+const router = Router();
 
 router.get(
-  "/",
-  async (req, res, next) => await getAll(req, res),
+  '/',
+  async (req, res) => getAll(req, res),
 );
 router.post(
-  "/",
-  async (req, res, next) => await addBenefit(req, res),
+  '/',
+  async (req, res) => addBenefit(req, res),
 );
 
 export default router;

@@ -1,16 +1,17 @@
-import { Router } from "express";
-var router = Router();
+import { Router } from 'express';
 
 /* Register. */
-import { register, login } from "../controller/authentication_controller.js";
+import { register, login } from '../controller/authentication_controller.js';
+
+const router = Router();
 
 router.post(
-  "/register",
-  async (req, res, next) => await register(req, res),
+  '/register',
+  async (req, res) => register(req, res),
 );
 router.post(
-  "/login",
-  async (req, res, next) => await login(req, res),
+  '/login',
+  async (req, res) => login(req, res),
 );
 
 export default router;
