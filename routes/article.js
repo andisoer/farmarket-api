@@ -1,8 +1,8 @@
-var express = require("express");
-var router = express.Router();
+import { Router } from "express";
+var router = Router();
 
 // const multer = require('multer');
-const articleController = require("../controller/article_controller");
+import { getAll, addArticle, deleteArticle } from "../controller/article_controller.js";
 
 // Set up multer for file uploads
 // const storage = multer.diskStorage({
@@ -17,15 +17,15 @@ const articleController = require("../controller/article_controller");
 
 router.get(
   "/",
-  async (req, res, next) => await articleController.getAll(req, res),
+  async (req, res, next) => await getAll(req, res),
 );
 router.post(
   "/",
-  async (req, res, next) => await articleController.addArticle(req, res),
+  async (req, res, next) => await addArticle(req, res),
 );
 router.delete(
   "/:articleId",
-  async (req, res, next) => await articleController.deleteArticle(req, res),
+  async (req, res, next) => await deleteArticle(req, res),
 );
 
-module.exports = router;
+export default router;

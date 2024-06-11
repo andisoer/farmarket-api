@@ -1,18 +1,19 @@
-const jwt = require("jsonwebtoken");
+import pkg from 'jsonwebtoken';
+const { sign, verify } = pkg;
 
 const secret = "your_jwt_secret"; // Use a strong secret in production
 
-const generateToken = (user) => {
-  return jwt.sign({ id: user.id, email: user.email }, secret, {
+export const generateToken = (user) => {
+  return sign({ id: user.id, email: user.email }, secret, {
     expiresIn: "12h",
   });
 };
 
-const verifyToken = (token) => {
-  return jwt.verify(token, secret);
+export const verifyToken = (token) => {
+  return verify(token, secret);
 };
 
-module.exports = {
+export default {
   generateToken,
   verifyToken,
 };

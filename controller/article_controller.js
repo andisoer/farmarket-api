@@ -1,32 +1,26 @@
-const db = require("../config/database.js");
-const helper = require("../services/helper");
-const config = require("../services/config");
+import { getOffset, emptyOrRows, result } from "../services/helper.js";
 
-const {
-  insertArticle,
-  readArticle,
-  removeArticle,
-} = require("../models/article_model");
+import { insertArticle, readArticle, removeArticle } from "../models/article_model.js";
 
-const { v4: uuidv4 } = require("uuid");
+import { v4 as uuidv4 } from "uuid";
 
-async function getAll(req, res) {
+export async function getAll(req, res) {
   const page = req.query.page;
   const limit = req.query.limit;
 
-  const offset = helper.getOffset(page, limit);
+  const offset = getOffset(page, limit);
 
   const rows = await readArticle(offset, limit);
-  const data = helper.emptyOrRows(rows);
+  const data = emptyOrRows(rows);
 
   const meta = { page };
 
   const response = { success: true, data, meta };
 
-  return helper.response(res, response, 200);
+  return result(res, response, 200);
 }
 
-async function addArticle(request, res) {
+export async function addArticle(request, res) {
   try {
     const { title, description } = request.body;
 
@@ -37,23 +31,23 @@ async function addArticle(request, res) {
         success: false,
         message: "Please fill all required fields",
       };
-      return helper.response(res, response, 401);
+      return result(res, response, 401);
     }
 
     await insertArticle(id, title, description);
 
     const response = { success: true, message: "Success add article" };
 
-    return helper.response(res, response, 201);
+    return result(res, response, 201);
   } catch (error) {
     console.log(`error ${error}`);
 
     const response = { success: false, message: "Failed add article" };
-    return helper.response(res, response, 500);
+    return result(res, response, 500);
   }
 }
 
-async function deleteArticle(request, res) {
+export async function deleteArticle(request, res) {
   try {
     const id = request.params.articleId;
 
@@ -65,16 +59,16 @@ async function deleteArticle(request, res) {
 
     const response = { success: true, message: "Success delete article" };
 
-    return helper.response(res, response, 200);
+    return result(res, response, 200);
   } catch (error) {
     console.log(`error ${error}`);
 
     const response = { success: false, message: "Failed delete article" };
-    return helper.response(res, response, 500);
+    return result(res, response, 500);
   }
 }
 
-module.exports = {
+export default {
   getAll,
   addArticle,
   deleteArticle,

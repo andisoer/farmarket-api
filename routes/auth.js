@@ -1,16 +1,16 @@
-var express = require("express");
-var router = express.Router();
+import { Router } from "express";
+var router = Router();
 
 /* Register. */
-const authenticationController = require("../controller/authentication_controller");
+import { register, login } from "../controller/authentication_controller.js";
 
 router.post(
   "/register",
-  async (req, res, next) => await authenticationController.register(req, res),
+  async (req, res, next) => await register(req, res),
 );
 router.post(
   "/login",
-  async (req, res, next) => await authenticationController.login(req, res),
+  async (req, res, next) => await login(req, res),
 );
 
-module.exports = router;
+export default router;

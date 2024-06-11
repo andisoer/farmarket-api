@@ -2,9 +2,10 @@
   "name": "farmarket-api",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "start": "node ./bin/www",
-    "start-dev": "nodemon ./bin/www",
+    "start": "node ./bin/www.js",
+    "start-dev": "nodemon ./bin/www.js",
     "start:prod": "NODE_ENV=production node ./bin/www"
   },
   "dependencies": {

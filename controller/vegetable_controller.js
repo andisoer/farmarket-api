@@ -1,28 +1,26 @@
-const db = require("../config/database.js");
-const helper = require("../services/helper");
-const config = require("../services/config");
+import { getOffset, emptyOrRows, result } from "../services/helper.js";
 
-const { insertVegetable, readVegetable } = require("../models/vegetable_model");
+import { insertVegetable, readVegetable } from "../models/vegetable_model.js";
 
-const { v4: uuidv4 } = require("uuid");
+import { v4 as uuidv4 } from "uuid";
 
-async function getAll(req, res) {
+export async function getAll(req, res) {
   const page = req.query.page;
   const limit = req.query.limit;
 
-  const offset = helper.getOffset(page, limit);
+  const offset = getOffset(page, limit);
 
   const rows = await readVegetable(offset, limit);
-  const data = helper.emptyOrRows(rows);
+  const data = emptyOrRows(rows);
 
   const meta = { page };
 
   const response = { success: true, data, meta };
 
-  return helper.response(res, response, 401);
+  return result(res, response, 401);
 }
 
-async function addVegetable(request, res) {
+export async function addVegetable(request, res) {
   try {
     const { name, price, unit, unit_total, description } = request.body;
 
@@ -34,7 +32,7 @@ async function addVegetable(request, res) {
         success: false,
         message: "Please fill all required fields",
       };
-      return helper.response(res, response, 401);
+      return result(res, response, 401);
     }
 
     const validUnits = ["gr", "pcs", "kg"];
@@ -43,7 +41,7 @@ async function addVegetable(request, res) {
         success: false,
         message: "Unit must be one of gr, pcs, or kg",
       };
-      return helper.response(res, response, 401);
+      return result(res, response, 401);
     }
 
     // const query = 'INSERT INTO vegetables (id, name, price, unit, unit_total, image, description) VALUES (?, ?, ?, ?, ?, ?, ?)';
@@ -51,16 +49,16 @@ async function addVegetable(request, res) {
 
     const response = { success: true, message: "Success add vegetable" };
 
-    return helper.response(res, response, 201);
+    return result(res, response, 201);
   } catch (error) {
     console.log(`error ${error}`);
 
     const response = { success: false, message: "Failed add vegetables" };
-    return helper.response(res, response, 500);
+    return result(res, response, 500);
   }
 }
 
-module.exports = {
+export default {
   getAll,
   addVegetable,
 };

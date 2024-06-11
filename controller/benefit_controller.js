@@ -1,12 +1,10 @@
-const db = require("../config/database.js");
-const helper = require("../services/helper");
-const config = require("../services/config");
+import helper from "../services/helper.js";
 
-const { insertBenefit, readBenefit } = require("../models/benefit_model");
+import { insertBenefit, readBenefit } from "../models/benefit_model.js";
 
-const { v4: uuidv4 } = require("uuid");
+import { v4 as uuidv4 } from "uuid";
 
-async function getAll(req, res) {
+export async function getAll(req, res) {
   const page = req.query.page;
   const limit = req.query.limit;
 
@@ -19,10 +17,10 @@ async function getAll(req, res) {
 
   const response = { success: true, data, meta };
 
-  return helper.response(res, response, 200);
+  return helper.result(res, response, 200);
 }
 
-async function addBenefit(request, res) {
+export async function addBenefit(request, res) {
   try {
     const { benefit } = request.body;
 
@@ -33,23 +31,23 @@ async function addBenefit(request, res) {
         success: false,
         message: "Please fill all required fields",
       };
-      return helper.response(res, response, 401);
+      return helper.result(res, response, 401);
     }
 
     await insertBenefit(id, benefit);
 
     const response = { success: true, message: "Success add benefit!" };
 
-    return helper.response(res, response, 201);
+    return helper.result(res, response, 201);
   } catch (error) {
     console.log(`error ${error}`);
 
     const response = { success: false, message: "Failed add benefit" };
-    return helper.response(res, response, 500);
+    return helper.result(res, response, 500);
   }
 }
 
-module.exports = {
+export default {
   getAll,
   addBenefit,
 };

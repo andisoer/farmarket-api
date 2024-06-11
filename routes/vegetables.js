@@ -1,8 +1,8 @@
-var express = require("express");
-var router = express.Router();
+import { Router } from "express";
+var router = Router();
 
 // const multer = require('multer');
-const vegetableController = require("../controller/vegetable_controller");
+import { getAll, addVegetable } from "../controller/vegetable_controller.js";
 
 // Set up multer for file uploads
 // const storage = multer.diskStorage({
@@ -17,11 +17,11 @@ const vegetableController = require("../controller/vegetable_controller");
 
 router.get(
   "/",
-  async (req, res, next) => await vegetableController.getAll(req, res),
+  async (req, res, next) => await getAll(req, res),
 );
 router.post(
   "/",
-  async (req, res, next) => await vegetableController.addVegetable(req, res),
+  async (req, res, next) => await addVegetable(req, res),
 );
 
-module.exports = router;
+export default router;

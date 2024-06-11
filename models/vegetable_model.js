@@ -1,6 +1,6 @@
-const db = require("../config/database");
+import db from "../config/database.js";
 
-const insertVegetable = async (
+export const insertVegetable = async (
   id,
   name,
   price,
@@ -13,9 +13,9 @@ const insertVegetable = async (
   await db.query(query, [id, name, price, unit, unit_total, description]);
 };
 
-const readVegetable = async (offset, limit) => {
+export const readVegetable = async (offset, limit) => {
   const query = `SELECT id, name, price, unit, unit_total FROM vegetables LIMIT ${offset},${limit}`;
   return await db.query(query);
 };
 
-module.exports = { insertVegetable, readVegetable };
+export default { insertVegetable, readVegetable };
