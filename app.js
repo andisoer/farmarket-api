@@ -11,6 +11,7 @@ import articleRouter from './routes/article.js';
 import benefitRouter from './routes/benefit.js';
 import authRouter from './routes/auth.js';
 import vegetableBenefitRouter from './routes/vegetables_benefit.js';
+import transactionRouter from './routes/transaction.js';
 
 const { json, urlencoded } = express;
 
@@ -33,6 +34,7 @@ app.use('/articles', articleRouter);
 app.use('/benefits', benefitRouter);
 app.use('/auth', authRouter);
 app.use('/vegetable-benefits', vegetableBenefitRouter);
+app.use('/transactions', transactionRouter);
 
 /// Public Uploads
 app.use('/uploads', express.static(path.join(path.resolve(), 'uploads')));
