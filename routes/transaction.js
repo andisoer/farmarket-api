@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { createVegetableTransaction, getById } from '../controller/transaction_controller.js';
+import { createVegetableTransaction, getAll, getById } from '../controller/transaction_controller.js';
 
 const router = Router();
 
@@ -12,5 +12,10 @@ router.post(
 router.get(
   '/:transactionId',
   async (req, res) => getById(req, res),
+);
+
+router.get(
+  '/',
+  async (req, res) => getAll(req, res),
 );
 export default router;

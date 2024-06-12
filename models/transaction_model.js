@@ -1,5 +1,10 @@
 import { query as _query } from '../config/database.js';
 
+const readTransaction = async (offset = 1, limit = 10) => {
+  const query = `SELECT id, total_amount, created_at FROM transactions LIMIT ${offset},${limit}`;
+  return _query(query);
+};
+
 const createTransaction = async (transactionId, totalAmount) => {
   const query = 'INSERT INTO transactions (id, total_amount) VALUES (?, ?)';
   return _query(query, [transactionId, totalAmount]);
@@ -32,5 +37,9 @@ async function getTransactionItemsByTransactionId(transactionId) {
 }
 
 export {
-  createTransaction, createTransactionItem, getTransactionById, getTransactionItemsByTransactionId,
+  createTransaction,
+  createTransactionItem,
+  getTransactionById,
+  getTransactionItemsByTransactionId,
+  readTransaction,
 };

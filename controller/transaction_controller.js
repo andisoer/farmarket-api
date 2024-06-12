@@ -8,9 +8,26 @@ import {
   createTransactionItem,
   getTransactionById,
   getTransactionItemsByTransactionId,
+  readTransaction,
 } from '../models/transaction_model.js';
 import { readVegetableById } from '../models/vegetable_model.js';
-import { result } from '../services/helper.js';
+import { getOffset, emptyOrRows, result } from '../services/helper.js';
+
+export async function getAll(req, res) {
+  const { page } = req.query;
+  const { limit } = req.query;
+
+  const offset = getOffset(limit, page);
+
+  const rows = await readTransaction(offset, limit);
+  const data = emptyOrRows(rows);
+
+  const meta = { page };
+
+  const response = { success: true, data, meta };
+
+  return result(res, response, 200);
+}
 
 const createVegetableTransaction = async (req, res) => {
   const { items } = req.body;
