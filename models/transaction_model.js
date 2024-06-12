@@ -13,4 +13,24 @@ const createTransactionItem = async (transactionId, vegetableId, quantity, price
   await _query(query, [transactionId, vegetableId, quantity, price, amount]);
 };
 
-export { createTransaction, createTransactionItem };
+async function getTransactionById(transactionId) {
+  const sql = `
+        SELECT t.id, t.user_id, t.total_amount, t.created_at
+        FROM transactions t
+        WHERE t.id = ?
+    `;
+  return _query(sql, [transactionId]);
+}
+async function getTransactionItemsByTransactionId(transactionId) {
+  const sql = `
+        SELECT ti.transaction_id, ti.vegetable_id, ti.quantity, ti.price, v.name, v.description, v.image_url
+        FROM transaction_items ti
+        JOIN vegetables v ON ti.vegetable_id = v.id
+        WHERE ti.transaction_id = ?
+    `;
+  return _query(sql, [transactionId]);
+}
+
+export {
+  createTransaction, createTransactionItem, getTransactionById, getTransactionItemsByTransactionId,
+};

@@ -3,11 +3,16 @@
 /* eslint-disable no-await-in-loop */
 import { v4 as uuidv4 } from 'uuid';
 
-import { createTransaction, createTransactionItem } from '../models/transaction_model.js';
+import {
+  createTransaction,
+  createTransactionItem,
+  getTransactionById,
+  getTransactionItemsByTransactionId,
+} from '../models/transaction_model.js';
 import { readVegetableById } from '../models/vegetable_model.js';
 import { result } from '../services/helper.js';
 
-export const createVegetableTransaction = async (req, res) => {
+const createVegetableTransaction = async (req, res) => {
   const { items } = req.body;
 
   if (!Array.isArray(items) || items.length === 0) {
@@ -57,7 +62,6 @@ export const createVegetableTransaction = async (req, res) => {
     };
     return result(res, response, 201);
   } catch (error) {
-    console.log(`error ${error.message}`);
     const response = {
       success: false,
       message: `${error.message}`,
@@ -66,4 +70,34 @@ export const createVegetableTransaction = async (req, res) => {
   }
 };
 
-export default { createVegetableTransaction };
+const getById = async (req, res) => {
+  const { transactionId } = req.params;
+
+  try {
+    const transaction = await getTransactionById(transactionId);
+    if (!transaction) {
+      const response = {
+        success: false,
+        message: 'Transaction not found',
+      };
+      return result(res, response, 404);
+    }
+
+    const items = await getTransactionItemsByTransactionId(transactionId);
+    transaction[0].items = items;
+
+    const response = {
+      success: false,
+      data: transaction[0],
+    };
+    return result(res, response, 200);
+  } catch (error) {
+    const response = {
+      success: false,
+      message: `${error.message}`,
+    };
+    return result(res, response, 500);
+  }
+};
+
+export { createVegetableTransaction, getById };
