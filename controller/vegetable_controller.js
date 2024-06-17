@@ -106,8 +106,8 @@ const getVegetablesByBenefitIds = async (request, res) => {
   try {
     const data = await readVegetablesByBenefitIds(benefitIds);
     if (data.length === 0) {
-      const response = { success: false, message: 'Sorry, no vegetables can be recommended based on this benefits' };
-      return result(res, response, 404);
+      const response = { success: false, data: [], message: 'Sorry, no vegetables can be recommended based on this benefits' };
+      return result(res, response, 200);
     }
 
     const vegetables = data.map((row) => ({
