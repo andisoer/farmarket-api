@@ -1,27 +1,23 @@
-var express = require("express");
-var router = express.Router();
+import { Router } from 'express';
+import { getAll, addVegetable, getById } from '../controller/vegetable_controller.js';
+import upload from '../middlewares/upload_middleware.js';
 
-// const multer = require('multer');
-const vegetableController = require("../controller/vegetable_controller");
-
-// Set up multer for file uploads
-// const storage = multer.diskStorage({
-//     destination: function (req, file, cb) {
-//         cb(null, 'uploads/'); // Directory to save uploaded files
-//     },
-//     filename: function (req, file, cb) {
-//         cb(null, Date.now() + path.extname(file.originalname)); // File name
-//     }
-// });
-// const upload = multer({ storage: storage });
+const router = Router();
 
 router.get(
-  "/",
-  async (req, res, next) => await vegetableController.getAll(req, res),
-);
-router.post(
-  "/",
-  async (req, res, next) => await vegetableController.addVegetable(req, res),
+  '/',
+  async (req, res) => getAll(req, res),
 );
 
-module.exports = router;
+router.get(
+  '/:vegetableId',
+  async (req, res) => getById(req, res),
+);
+
+router.post(
+  '/',
+  upload.single('image'),
+  addVegetable,
+);
+
+export default router;

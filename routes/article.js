@@ -1,31 +1,22 @@
-var express = require("express");
-var router = express.Router();
+import { Router } from 'express';
 
-// const multer = require('multer');
-const articleController = require("../controller/article_controller");
+import { getAll, addArticle, deleteArticle } from '../controller/article_controller.js';
+import upload from '../middlewares/upload_middleware.js';
 
-// Set up multer for file uploads
-// const storage = multer.diskStorage({
-//     destination: function (req, file, cb) {
-//         cb(null, 'uploads/'); // Directory to save uploaded files
-//     },
-//     filename: function (req, file, cb) {
-//         cb(null, Date.now() + path.extname(file.originalname)); // File name
-//     }
-// });
-// const upload = multer({ storage: storage });
+const router = Router();
 
 router.get(
-  "/",
-  async (req, res, next) => await articleController.getAll(req, res),
+  '/',
+  async (req, res) => getAll(req, res),
 );
 router.post(
-  "/",
-  async (req, res, next) => await articleController.addArticle(req, res),
+  '/',
+  upload.single('image'),
+  addArticle,
 );
 router.delete(
-  "/:articleId",
-  async (req, res, next) => await articleController.deleteArticle(req, res),
+  '/:articleId',
+  async (req, res) => deleteArticle(req, res),
 );
 
-module.exports = router;
+export default router;

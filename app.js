@@ -1,28 +1,38 @@
-var express = require("express");
-var path = require("path");
-var cookieParser = require("cookie-parser");
-var logger = require("morgan");
+import express from 'express';
+import path, { join } from 'path';
+import cookieParser from 'cookie-parser';
+import logger from 'morgan';
+import cors from 'cors';
 
-var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/auth");
-var vegetablesRouter = require("./routes/vegetables");
-var articleRouter = require("./routes/article");
-var benefitRouter = require("./routes/benefit");
-var authRouter = require("./routes/auth");
+import { fileURLToPath } from 'url';
+import indexRouter from './routes/index.js';
+import vegetablesRouter from './routes/vegetables.js';
+import articleRouter from './routes/article.js';
+import benefitRouter from './routes/benefit.js';
+import authRouter from './routes/auth.js';
 
-var app = express();
+const { json, urlencoded } = express;
 
-app.use(logger("dev"));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const app = express();
+
+app.use(cors());
+
+app.use(logger('dev'));
+app.use(json());
+app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(join(__dirname, 'public')));
 
-app.use("/", indexRouter);
-app.use("/users", usersRouter);
-app.use("/vegetables", vegetablesRouter);
-app.use("/articles", articleRouter);
-app.use("/benefits", benefitRouter);
-app.use("/auth", authRouter);
+app.use('/', indexRouter);
+app.use('/vegetables', vegetablesRouter);
+app.use('/articles', articleRouter);
+app.use('/benefits', benefitRouter);
+app.use('/auth', authRouter);
 
-module.exports = app;
+/// Public Uploads
+app.use('/uploads', express.static(path.join(path.resolve(), 'uploads')));
+
+export default app;

@@ -1,20 +1,20 @@
-function getOffset(currentPage = 1, listPerPage) {
+export function getOffset(listPerPage = 10, currentPage = 1) {
   return (currentPage - 1) * [listPerPage];
 }
 
-function emptyOrRows(rows) {
+export function emptyOrRows(rows) {
   if (!rows) {
     return [];
   }
   return rows;
 }
 
-function response(res, response, statusCode = 200) {
+export function result(res, response, statusCode = 200) {
   res.status(statusCode).json(response);
 }
 
-module.exports = {
+export default {
   getOffset,
   emptyOrRows,
-  response,
+  result,
 };

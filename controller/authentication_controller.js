@@ -1,12 +1,13 @@
-const helper = require("../services/helper");
-const bcrypt = require("bcryptjs");
+import pkg from 'bcryptjs';
+import { v4 as uuidv4 } from 'uuid';
+import { result } from '../services/helper.js';
 
-const { insertUser, findUserByEmail } = require("../models/user_model");
-const { generateToken } = require("../services/jwt");
+import { insertUser, findUserByEmail } from '../models/user_model.js';
+import { generateToken } from '../services/jwt.js';
 
-const { v4: uuidv4 } = require("uuid");
+const { hash, compare } = pkg;
 
-async function register(request, res) {
+export async function register(request, res) {
   try {
     const { name, email, password } = request.body;
 
@@ -15,72 +16,72 @@ async function register(request, res) {
     if (!name || !email || !password) {
       const response = {
         success: false,
-        message: "Please fill all required fields",
+        message: 'Please fill all required fields',
       };
-      return helper.response(res, response, 401);
+      return result(res, response, 401);
     }
 
     const userExists = await findUserByEmail(email);
     if (userExists[0]) {
-      const response = { success: false, message: "Email already taken" };
-      return helper.response(res, response, 401);
+      const response = { success: false, message: 'Email already taken' };
+      return result(res, response, 401);
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await hash(password, 10);
 
     await insertUser(id, name, email, hashedPassword);
 
-    const response = { success: true, message: "Register success" };
+    const response = { success: true, message: 'Register success' };
 
-    return helper.response(res, response, 201);
+    return result(res, response, 201);
   } catch (error) {
     console.log(`error ${error}`);
 
-    const response = { success: false, message: "Register failed" };
-    return helper.response(res, response, 500);
+    const response = { success: false, message: 'Register failed' };
+    return result(res, response, 500);
   }
 }
 
-async function login(request, res) {
+export async function login(request, res) {
   try {
     const { email, password } = request.body;
     if (!email || !password) {
       const response = {
         success: false,
-        message: "Please fill all required fields",
+        message: 'Please fill all required fields',
       };
-      return helper.response(res, response, 401);
+      return result(res, response, 401);
     }
 
     const user = await findUserByEmail(email);
     if (!user[0]) {
-      const response = { success: false, message: "Account not found!" };
-      return helper.response(res, response, 404);
+      const response = { success: false, message: 'Account not found!' };
+      return result(res, response, 404);
     }
-    const isPasswordValid = await bcrypt.compare(password, user[0].password);
+    const isPasswordValid = await compare(password, user[0].password);
     if (!isPasswordValid) {
-      const response = { success: false, message: "Invalid email / password!" };
-      return helper.response(res, response, 401);
+      const response = { success: false, message: 'Invalid email / password!' };
+      return result(res, response, 401);
     }
 
     const token = generateToken(user);
 
     const response = {
       success: true,
-      message: "Login success",
-      data: { user: user, token: token },
+      message: 'Login success',
+      data: { user, token },
     };
 
-    return helper.response(res, response, 201);
+    return result(res, response, 201);
   } catch (error) {
     console.log(`error ${error}`);
 
-    const response = { success: false, message: "Login failed" };
-    return helper.response(res, response, 500);
+    const response = { success: false, message: 'Login failed' };
+    return result(res, response, 500);
   }
 }
 
-module.exports = {
+export default {
   register,
   login,
 };

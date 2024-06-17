@@ -1,15 +1,16 @@
-var express = require("express");
-var router = express.Router();
+import { Router } from 'express';
 
-const benefitController = require("../controller/benefit_controller");
+import { getAll, addBenefit } from '../controller/benefit_controller.js';
+
+const router = Router();
 
 router.get(
-  "/",
-  async (req, res, next) => await benefitController.getAll(req, res),
+  '/',
+  async (req, res) => getAll(req, res),
 );
 router.post(
-  "/",
-  async (req, res, next) => await benefitController.addBenefit(req, res),
+  '/',
+  async (req, res) => addBenefit(req, res),
 );
 
-module.exports = router;
+export default router;

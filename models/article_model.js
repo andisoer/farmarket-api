@@ -1,19 +1,18 @@
-const db = require("../config/database");
+import { query as _query } from '../config/database.js';
 
-const insertArticle = async (id, title, description) => {
-  const query =
-    "INSERT INTO articles (id, title, description) VALUES (?, ?, ?)";
-  await db.query(query, [id, title, description]);
+export const insertArticle = async (id, imageUrl, title, description) => {
+  const query = 'INSERT INTO articles (id, title, image_url, description) VALUES (?, ?, ?, ?)';
+  await _query(query, [id, title, imageUrl, description]);
 };
 
-const readArticle = async (offset, limit) => {
+export const readArticle = async (offset = 1, limit = 10) => {
   const query = `SELECT id, title, description, image_url, created_at FROM articles LIMIT ${offset},${limit}`;
-  return await db.query(query);
+  return _query(query);
 };
 
-const removeArticle = async (id) => {
-  const query = "DELETE FROM articles WHERE id=?";
-  await db.query(query, [id]);
+export const removeArticle = async (id) => {
+  const query = 'DELETE FROM articles WHERE id=?';
+  await _query(query, [id]);
 };
 
-module.exports = { insertArticle, readArticle, removeArticle };
+export default { insertArticle, readArticle, removeArticle };

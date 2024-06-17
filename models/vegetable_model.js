@@ -1,21 +1,26 @@
-const db = require("../config/database");
+import { query as _query } from '../config/database.js';
 
-const insertVegetable = async (
+export const insertVegetable = async (
   id,
   name,
+  imageUrl,
   price,
   unit,
-  unit_total,
+  unitTotal,
   description,
 ) => {
-  const query =
-    "INSERT INTO vegetables (id, name, price, unit, unit_total, description) VALUES (?, ?, ?, ?, ?, ?)";
-  await db.query(query, [id, name, price, unit, unit_total, description]);
+  const query = 'INSERT INTO vegetables (id, name, image_url, price, unit, unit_total, description) VALUES (?, ?, ?, ?, ?, ?, ?)';
+  await _query(query, [id, name, imageUrl, price, unit, unitTotal, description]);
 };
 
-const readVegetable = async (offset, limit) => {
-  const query = `SELECT id, name, price, unit, unit_total FROM vegetables LIMIT ${offset},${limit}`;
-  return await db.query(query);
+export const readVegetable = async (offset = 1, limit = 10) => {
+  const query = `SELECT id, name, image_url, price, unit, unit_total FROM vegetables LIMIT ${offset},${limit}`;
+  return _query(query);
 };
 
-module.exports = { insertVegetable, readVegetable };
+export const readVegetableById = async (id) => {
+  const query = `SELECT id, name, description, image_url, price, unit, unit_total FROM vegetables WHERE id = "${id}"`;
+  return _query(query);
+};
+
+export default { insertVegetable, readVegetable, readVegetableById };

@@ -1,66 +1,75 @@
-const db = require("../config/database.js");
-const helper = require("../services/helper");
-const config = require("../services/config");
+import { v4 as uuidv4 } from 'uuid';
+import { getOffset, emptyOrRows, result } from '../services/helper.js';
 
-const { insertVegetable, readVegetable } = require("../models/vegetable_model");
+import { insertVegetable, readVegetable, readVegetableById } from '../models/vegetable_model.js';
 
-const { v4: uuidv4 } = require("uuid");
+const getAll = async (req, res) => {
+  const { page } = req.query;
+  const { limit } = req.query;
 
-async function getAll(req, res) {
-  const page = req.query.page;
-  const limit = req.query.limit;
-
-  const offset = helper.getOffset(page, limit);
+  const offset = getOffset(limit, page);
 
   const rows = await readVegetable(offset, limit);
-  const data = helper.emptyOrRows(rows);
+  const data = emptyOrRows(rows);
 
   const meta = { page };
 
   const response = { success: true, data, meta };
 
-  return helper.response(res, response, 401);
-}
+  return result(res, response, 200);
+};
 
-async function addVegetable(request, res) {
+const getById = async (req, res) => {
+  const id = req.params.vegetableId;
+
+  const data = await readVegetableById(id);
+
+  const response = { success: true, data: data[0] };
+
+  return result(res, response, 200);
+};
+
+const addVegetable = async (request, res) => {
   try {
-    const { name, price, unit, unit_total, description } = request.body;
+    const {
+      name, price, unit, unitTotal, description,
+    } = request.body;
 
-    // const image = req.file ? req.file.filename : null;
+    const imageUrl = request.file ? request.file.path : null;
     const id = uuidv4();
 
-    if (!name || !price || !unit || !unit_total || !description) {
+    if (!name || !imageUrl || !price || !unit || !unitTotal || !description) {
       const response = {
         success: false,
-        message: "Please fill all required fields",
+        message: 'Please fill all required fields',
       };
-      return helper.response(res, response, 401);
+      return result(res, response, 403);
     }
 
-    const validUnits = ["gr", "pcs", "kg"];
+    const validUnits = ['gr', 'pcs', 'kg'];
     if (!validUnits.includes(unit)) {
       const response = {
         success: false,
-        message: "Unit must be one of gr, pcs, or kg",
+        message: 'Unit must be one of gr, pcs, or kg',
       };
-      return helper.response(res, response, 401);
+      return result(res, response, 401);
     }
 
-    // const query = 'INSERT INTO vegetables (id, name, price, unit, unit_total, image, description) VALUES (?, ?, ?, ?, ?, ?, ?)';
-    await insertVegetable(id, name, price, unit, unit_total, description);
+    await insertVegetable(id, name, imageUrl, price, unit, unitTotal, description);
 
-    const response = { success: true, message: "Success add vegetable" };
+    const response = { success: true, message: 'Success add vegetable' };
 
-    return helper.response(res, response, 201);
+    return result(res, response, 201);
   } catch (error) {
     console.log(`error ${error}`);
 
-    const response = { success: false, message: "Failed add vegetables" };
-    return helper.response(res, response, 500);
+    const response = { success: false, message: 'Failed add vegetables' };
+    return result(res, response, 500);
   }
-}
+};
 
-module.exports = {
+export {
   getAll,
+  getById,
   addVegetable,
 };

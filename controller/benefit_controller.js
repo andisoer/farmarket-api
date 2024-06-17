@@ -1,28 +1,25 @@
-const db = require("../config/database.js");
-const helper = require("../services/helper");
-const config = require("../services/config");
+import { v4 as uuidv4 } from 'uuid';
+import { getOffset, emptyOrRows, result } from '../services/helper.js';
 
-const { insertBenefit, readBenefit } = require("../models/benefit_model");
+import { insertBenefit, readBenefit } from '../models/benefit_model.js';
 
-const { v4: uuidv4 } = require("uuid");
+export async function getAll(req, res) {
+  const { page } = req.query;
+  const { limit } = req.query;
 
-async function getAll(req, res) {
-  const page = req.query.page;
-  const limit = req.query.limit;
-
-  const offset = helper.getOffset(page, limit);
+  const offset = getOffset(limit, page);
 
   const rows = await readBenefit(offset, limit);
-  const data = helper.emptyOrRows(rows);
+  const data = emptyOrRows(rows);
 
   const meta = { page };
 
   const response = { success: true, data, meta };
 
-  return helper.response(res, response, 200);
+  return result(res, response, 200);
 }
 
-async function addBenefit(request, res) {
+export async function addBenefit(request, res) {
   try {
     const { benefit } = request.body;
 
@@ -31,25 +28,25 @@ async function addBenefit(request, res) {
     if (!benefit) {
       const response = {
         success: false,
-        message: "Please fill all required fields",
+        message: 'Please fill all required fields',
       };
-      return helper.response(res, response, 401);
+      return result(res, response, 401);
     }
 
     await insertBenefit(id, benefit);
 
-    const response = { success: true, message: "Success add benefit!" };
+    const response = { success: true, message: 'Success add benefit!' };
 
-    return helper.response(res, response, 201);
+    return result(res, response, 201);
   } catch (error) {
     console.log(`error ${error}`);
 
-    const response = { success: false, message: "Failed add benefit" };
-    return helper.response(res, response, 500);
+    const response = { success: false, message: 'Failed add benefit' };
+    return result(res, response, 500);
   }
 }
 
-module.exports = {
+export default {
   getAll,
   addBenefit,
 };
