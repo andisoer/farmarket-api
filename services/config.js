@@ -1,7 +1,8 @@
 const config = {
   db: {
     /* don't expose password or any sensitive info, done only for demo */
-    host: 'farmarket-db.c3em8uegcnl8.ap-southeast-1.rds.amazonaws.com',
+    // host: 'farmarket-db.c3em8uegcnl8.ap-southeast-1.rds.amazonaws.com',
+    host: 'localhost',
     port: '3306',
     user: 'root',
     password: '1234567890',
