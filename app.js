@@ -63,10 +63,11 @@ const host = process.env.NODE_ENV !== 'production' ? 'localhost' : '0.0.0.0';
 
 const server = createServer(app);
 
-server.listen(port, host);
+server.listen(port);
 
 console.log(`Server running at http://${host}:${port}`);
 
+export default server;
 // const PORT = process.env.PORT || 5000;
 
 // const server = createServer(app);
