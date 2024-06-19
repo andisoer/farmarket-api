@@ -3,6 +3,7 @@ import path, { join } from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import cors from 'cors';
+import { createServer } from 'http';
 
 import { fileURLToPath } from 'url';
 import indexRouter from './routes/index.js';
@@ -39,11 +40,32 @@ app.use('/transactions', transactionRouter);
 /// Public Uploads
 app.use('/uploads', express.static(path.join(path.resolve(), 'uploads')));
 
-const PORT = process.env.PORT || 5000;
+function normalizePort(val) {
+  const port = parseInt(val, 10);
 
-app.listen(PORT, () => {
-  console.log('Server is running....');
-});
+  if (Number.isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
+
+const port = normalizePort(process.env.PORT || '5000');
+app.set('port', port);
+
+const host = process.env.NODE_ENV !== 'production' ? 'localhost' : '0.0.0.0';
+
+const server = createServer(app);
+
+server.listen(port);
+
+console.log(`Server running at http://${host}:${port}`);
 
 // const PORT = process.env.PORT || 5000;
 
