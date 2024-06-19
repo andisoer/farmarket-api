@@ -76,6 +76,7 @@ const createVegetableTransaction = async (req, res) => {
     const response = {
       success: true,
       message: 'Success create transaction',
+      data: id,
     };
     return result(res, response, 201);
   } catch (error) {
