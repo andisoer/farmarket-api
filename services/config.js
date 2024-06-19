@@ -3,7 +3,7 @@ const config = {
     /* don't expose password or any sensitive info, done only for demo */
     // host: 'farmarket-db.c3em8uegcnl8.ap-southeast-1.rds.amazonaws.com',
     // host: 'localhost',
-    host: 'localhost',
+    host: '103.147.154.173',
     // host: 'localhost',
     port: '3306',
     user: 'digiappc_farmarket_user',
