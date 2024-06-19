@@ -23,7 +23,7 @@ export const readVegetableById = async (id) => {
         FROM vegetables v
         LEFT JOIN vegetable_benefits vb ON v.id = vb.vegetable_id
         LEFT JOIN benefits b ON vb.benefit_id = b.id
-        WHERE v.id = "${id}"`;
+        WHERE v.id = '${id}'`;
   return _query(query);
 };
 

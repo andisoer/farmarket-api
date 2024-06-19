@@ -11,8 +11,8 @@ export const readArticle = async (offset = 1, limit = 10) => {
 };
 
 export const readArticleById = async (id) => {
-  const query = `SELECT id, title, description, image_url, created_at FROM articles WHERE id = "${id}"`;
-  return _query(query);
+  const query = 'SELECT id, title, description, image_url, created_at FROM articles WHERE id = ?';
+  return _query(query, [id]);
 };
 
 export const removeArticle = async (id) => {
