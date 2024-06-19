@@ -3,7 +3,6 @@ import path, { join } from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import cors from 'cors';
-import { createServer } from 'http';
 
 import { fileURLToPath } from 'url';
 import indexRouter from './routes/index.js';
@@ -42,9 +41,15 @@ app.use('/uploads', express.static(path.join(path.resolve(), 'uploads')));
 
 const PORT = process.env.PORT || 5000;
 
-const server = createServer(app);
-server.listen(PORT, () => {
+app.listen(PORT, () => {
   console.log('Server is running....');
 });
+
+// const PORT = process.env.PORT || 5000;
+
+// const server = createServer(app);
+// server.listen(PORT, () => {
+//   console.log('Server is running....');
+// });
 
 // export default app;
