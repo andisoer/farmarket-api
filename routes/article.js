@@ -1,6 +1,8 @@
 import { Router } from 'express';
 
-import { getAll, addArticle, deleteArticle } from '../controller/article_controller.js';
+import {
+  getAll, addArticle, deleteArticle, getById,
+} from '../controller/article_controller.js';
 import upload from '../middlewares/upload_middleware.js';
 
 const router = Router();
@@ -13,6 +15,10 @@ router.post(
   '/',
   upload.single('image'),
   addArticle,
+);
+router.get(
+  '/:articleId',
+  async (req, res) => getById(req, res),
 );
 router.delete(
   '/:articleId',

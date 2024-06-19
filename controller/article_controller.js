@@ -1,7 +1,9 @@
 import { v4 as uuidv4 } from 'uuid';
 import { getOffset, emptyOrRows, result } from '../services/helper.js';
 
-import { insertArticle, readArticle, removeArticle } from '../models/article_model.js';
+import {
+  insertArticle, readArticle, removeArticle, readArticleById,
+} from '../models/article_model.js';
 
 const getAll = async (req, res) => {
   const { page } = req.query;
@@ -15,6 +17,24 @@ const getAll = async (req, res) => {
   const meta = { page };
 
   const response = { success: true, data, meta };
+
+  return result(res, response, 200);
+};
+
+const getById = async (req, res) => {
+  const id = req.params.articleId;
+
+  const data = await readArticleById(id);
+
+  if (data.length === 0) {
+    const response = {
+      success: false,
+      message: 'Article not found',
+    };
+    return result(res, response, 404);
+  }
+
+  const response = { success: true, data: data[0] };
 
   return result(res, response, 200);
 };
@@ -70,6 +90,7 @@ const deleteArticle = async (request, res) => {
 
 export {
   getAll,
+  getById,
   addArticle,
   deleteArticle,
 };

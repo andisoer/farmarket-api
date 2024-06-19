@@ -10,9 +10,19 @@ export const readArticle = async (offset = 1, limit = 10) => {
   return _query(query);
 };
 
+export const readArticleById = async (id) => {
+  const query = `SELECT id, title, description, image_url, created_at FROM articles WHERE id = "${id}"`;
+  return _query(query);
+};
+
 export const removeArticle = async (id) => {
   const query = 'DELETE FROM articles WHERE id=?';
   await _query(query, [id]);
 };
 
-export default { insertArticle, readArticle, removeArticle };
+export default {
+  insertArticle,
+  readArticle,
+  removeArticle,
+  readArticleById,
+};
