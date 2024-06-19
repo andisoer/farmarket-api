@@ -63,7 +63,7 @@ const host = process.env.NODE_ENV !== 'production' ? 'localhost' : '0.0.0.0';
 
 const server = createServer(app);
 
-server.listen(port);
+server.listen(port, host);
 
 console.log(`Server running at http://${host}:${port}`);
 
